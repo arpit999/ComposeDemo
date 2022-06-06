@@ -49,12 +49,9 @@ class MainActivity : ComponentActivity() {
             mutableStateOf(false)
         }
 
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-
+        Surface(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()) {
             Card(
                 modifier = Modifier
                     .width(200.dp)
