@@ -31,6 +31,11 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun MyApp() {
+
+        val moneyCounter = remember {
+            mutableStateOf(0)
+        }
+
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -44,7 +49,7 @@ class MainActivity : ComponentActivity() {
             ) {
 
                 Text(
-                    text = "$100",
+                    text = "$${moneyCounter.value}",
                     style = TextStyle(
                         color = Color.White,
                         fontWeight = FontWeight.ExtraBold,
@@ -53,33 +58,29 @@ class MainActivity : ComponentActivity() {
                 )
 
                 Spacer(modifier = Modifier.height(200.dp))
-                CreateCircle()
+                CreateCircle(moneyCounter = moneyCounter.value) { newValue ->
+                    moneyCounter.value = newValue
+                }
             }
 
         }
     }
 
 
-    @Preview
+    //    @Preview
     @Composable
-    fun CreateCircle() {
-        var moneyCounter by remember {
-            mutableStateOf(0)
-        }
+    fun CreateCircle(moneyCounter: Int = 0, updateMoneyCounter: (Int) -> Unit) {
         Card(
             modifier = Modifier
                 .padding(3.dp)
                 .size(90.dp),
-            shape = CircleShape,
-            elevation = 8.dp
+            shape = CircleShape, elevation = 8.dp
         ) {
-
             Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.clickable {
-                    moneyCounter += 1
-                    Log.d("MainActivity", "CreateCircle: click")
-                }) {
+                contentAlignment = Alignment.Center, modifier = Modifier.clickable {
+                    updateMoneyCounter(moneyCounter + 1)
+                }
+            ) {
 
                 Text(text = "TAP $moneyCounter")
             }
