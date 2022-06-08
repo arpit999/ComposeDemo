@@ -8,7 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -63,6 +63,9 @@ class MainActivity : ComponentActivity() {
     @Preview
     @Composable
     fun CreateCircle() {
+        var moneyCounter by remember {
+            mutableStateOf(0)
+        }
         Card(
             modifier = Modifier
                 .padding(3.dp)
@@ -74,10 +77,11 @@ class MainActivity : ComponentActivity() {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.clickable {
+                    moneyCounter += 1
                     Log.d("MainActivity", "CreateCircle: click")
                 }) {
 
-                Text(text = "TAP")
+                Text(text = "TAP $moneyCounter")
             }
         }
     }
