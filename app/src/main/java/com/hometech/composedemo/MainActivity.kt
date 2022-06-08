@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
                 }
             ) {
 
-                Text(text = "TAP $moneyCounter")
+                Text(text = "TAP")
             }
         }
     }
