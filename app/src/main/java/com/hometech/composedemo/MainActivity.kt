@@ -61,6 +61,17 @@ class MainActivity : ComponentActivity() {
                 CreateCircle(moneyCounter = moneyCounter.value) { newValue ->
                     moneyCounter.value = newValue
                 }
+
+                if (moneyCounter.value > 20) {
+                    Text(
+                        text = "You have lots of money!",
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    )
+                }
             }
 
         }
