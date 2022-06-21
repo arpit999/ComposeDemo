@@ -1,108 +1,82 @@
 package com.hometech.composedemo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hometech.composedemo.ui.theme.ComposeDemoTheme
+import com.hometech.composedemo.ui.theme.Purple100
+import com.hometech.composedemo.ui.theme.Purple200
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeDemoTheme {
-                MyApp()
+            MyApp {
+                TopHeader()
             }
         }
     }
 
     @Composable
-    fun MyApp() {
-
-        val moneyCounter = remember {
-            mutableStateOf(0)
+    fun MyApp(content: @Composable () -> Unit) {
+        ComposeDemoTheme {
+            Surface {
+                content()
+            }
         }
+    }
+
+
+    @Preview
+    @Composable
+    fun TopHeader(totalPerPerson: Double = 0.00) {
 
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(),
-            color = Color(0xFF546E7A)
+                .height(150.dp)
+                .clip(shape = RoundedCornerShape(12.dp)),
+            color = Purple100
         ) {
-
             Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
+                val total = "%.2f".format(totalPerPerson)
 
                 Text(
-                    text = "$${moneyCounter.value}",
-                    style = TextStyle(
-                        color = Color.White,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 35.sp
-                    )
+                    style = MaterialTheme.typography.h5,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    text = "Total Per Person"
                 )
 
-                Spacer(modifier = Modifier.height(200.dp))
-                CreateCircle(moneyCounter = moneyCounter.value) { newValue ->
-                    moneyCounter.value = newValue
-                }
+                Text(fontWeight = FontWeight.ExtraBold, fontSize = 40.sp, text = "$$total")
 
-                if (moneyCounter.value > 20) {
-                    Text(
-                        text = "You have lots of money!",
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    )
-                }
             }
 
         }
+
     }
 
-
-    //    @Preview
-    @Composable
-    fun CreateCircle(moneyCounter: Int = 0, updateMoneyCounter: (Int) -> Unit) {
-        Card(
-            modifier = Modifier
-                .padding(3.dp)
-                .size(90.dp),
-            shape = CircleShape, elevation = 8.dp
-        ) {
-            Box(
-                contentAlignment = Alignment.Center, modifier = Modifier.clickable {
-                    updateMoneyCounter(moneyCounter + 1)
-                }
-            ) {
-
-                Text(text = "TAP")
-            }
-        }
-    }
 
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
-        ComposeDemoTheme {
-            MyApp()
+        MyApp {
         }
     }
 
