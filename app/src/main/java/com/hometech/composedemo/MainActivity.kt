@@ -3,7 +3,9 @@ package com.hometech.composedemo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -40,7 +42,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    @Preview
+    //    @Preview
     @Composable
     fun TopHeader(totalPerPerson: Double = 0.00) {
 
@@ -72,6 +74,20 @@ class MainActivity : ComponentActivity() {
 
     }
 
+
+    @Preview
+    @Composable
+    fun MainContent() {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(corner = CornerSize(8.dp)),
+            border = BorderStroke(width = 2.dp, color = Color.LightGray)
+        ) {
+            Column() {
+
+            }
+        }
+    }
 
     @Preview(showBackground = true)
     @Composable
