@@ -1,8 +1,7 @@
-@file:OptIn(ExperimentalComposeUiApi::class)
-
 package com.hometech.composedemo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -17,9 +16,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,8 +24,8 @@ import androidx.compose.ui.unit.sp
 import com.hometech.composedemo.ui.InputField
 import com.hometech.composedemo.ui.theme.ComposeDemoTheme
 import com.hometech.composedemo.ui.theme.Purple100
-import com.hometech.composedemo.ui.theme.Purple200
 
+@ExperimentalComposeUiApi
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,10 +79,22 @@ class MainActivity : ComponentActivity() {
 
     }
 
-
+    @ExperimentalComposeUiApi
     @Preview
     @Composable
     private fun MainContent() {
+
+        BillForm() { billAmount ->
+            Log.d("Amount", "BillAmount: $billAmount")
+
+        }
+
+    }
+
+    @ExperimentalComposeUiApi
+    @Composable
+    fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) {
+
         val totalBillState = remember {
             mutableStateOf("")
         }
@@ -110,12 +119,12 @@ class MainActivity : ComponentActivity() {
                     onAction = KeyboardActions {
 
                         if (!validState) return@KeyboardActions
-                        //Todo -> OnValueChanged
+
+                        onValChange(totalBillState.value.trim())
 
                         keyBoardController?.hide()
                     }
                 )
-
 
             }
         }
