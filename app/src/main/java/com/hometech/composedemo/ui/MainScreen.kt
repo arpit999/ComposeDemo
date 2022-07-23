@@ -1,6 +1,7 @@
 package com.hometech.composedemo.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -11,19 +12,22 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.hometech.composedemo.ui.theme.ComposeDemoTheme
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
-    val navController = rememberNavController()
+    ComposeDemoTheme {
+        val navController = rememberNavController()
 
-    Scaffold(
-        bottomBar = {
-            BottomBar(navHostController = navController)
+        Scaffold(
+            bottomBar = {
+                BottomBar(navHostController = navController)
+            }
+        ) {
+            BottomNavGraph(navController = navController)
         }
-    ) {
-        BottomNavGraph(navController = navController)
     }
 }
 
@@ -57,13 +61,19 @@ fun RowScope.AddItem(
         selected = currentDestination.hierarchy.any {
             it.route == currentDestination.route
         },
-        onClick = { navHostController.navigate(screen.route) },
+        onClick = {
+            navHostController.navigate(screen.route) {
+                popUpTo(navHostController.graph.startDestinationId)
+                launchSingleTop = true
+            }
+        },
         label = {
             Text(text = screen.title)
         },
         icon = {
             Icon(imageVector = screen.icon, contentDescription = "You are on ${screen.title}")
-        }
+        },
+        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
     )
 
 }

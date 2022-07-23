@@ -17,7 +17,7 @@ fun ProfileScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.Red),
+            .background(color = Color.Green),
         contentAlignment = Alignment.Center
     ) {
 
