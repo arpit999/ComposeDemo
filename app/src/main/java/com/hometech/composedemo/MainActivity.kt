@@ -29,6 +29,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.hometech.composedemo.ui.MainScreen
 import com.hometech.composedemo.ui.screens.HomeScreen
 import com.hometech.composedemo.ui.theme.ComposeDemoTheme
 
@@ -38,8 +39,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
-
+            MainScreen()
         }
     }
 }
