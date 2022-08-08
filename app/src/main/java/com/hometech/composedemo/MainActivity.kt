@@ -4,15 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 import com.hometech.composedemo.ui.ExpandableCard
 import com.hometech.composedemo.ui.Help
+import com.hometech.composedemo.ui.QuestionDb
 import com.hometech.composedemo.ui.theme.ComposeDemoTheme
 
 @ExperimentalComposeUiApi
@@ -24,51 +23,19 @@ class MainActivity : ComponentActivity() {
 
             ComposeDemoTheme() {
 
-                val questions =
-                    listOf("Question 1", "Question 2", "Question 3", "Question 4", "Question 5", "Question 6")
-                val answers = listOf(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna " +
-                            "aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
-                            "ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna " +
-                            "aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
-                            "ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna " +
-                            "aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
-                            "ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna " +
-                            "aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
-                            "ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna " +
-                            "aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
-                            "ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna " +
-                            "aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
-                            "ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna " +
-                            "aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
-                            "ullamco laboris nisi ut aliquip ex ea commodo consequat."
-                )
-
-
-                val faqItems by remember {
-                    mutableStateOf(
-                        questions.mapIndexed { index, question ->
-                            Help(question = question, answer = answers[index], isExpandable = true)
-                        }
-                    )
+                var questions by remember {
+                    mutableStateOf(QuestionDb.getQuestions())
                 }
 
-                LazyColumn() {
-                    items(faqItems.size) { index ->
-                        ExpandableCard(item = faqItems[index])
+                LazyColumn {
+                    items(questions) { item: Question ->
+                        ExpandableCard(
+                            item = item,
+                            onExpanded = { clickedItem ->
+                                val updatedItem = clickedItem.copy(expanded = clickedItem.expanded.not())
+                                questions = questions.updateItem(updatedItem) { it.questionText == clickedItem.questionText }
+                            }
+                        )
                     }
                 }
 

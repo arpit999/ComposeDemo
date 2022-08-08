@@ -22,21 +22,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.hometech.composedemo.Question
 
 @ExperimentalMaterialApi
 @Composable
 fun ExpandableCard(
-    item: Help,
+    item: Question,
     titleFontSize: TextUnit = MaterialTheme.typography.h6.fontSize,
     titleFontWeight: FontWeight = FontWeight.Bold,
     descriptionFontSize: TextUnit = MaterialTheme.typography.subtitle1.fontSize,
     descriptionFontWeight: FontWeight = FontWeight.Normal,
     descriptionMaxLines: Int = 4,
-    padding: Dp = 12.dp
+    padding: Dp = 12.dp,
+    onExpanded: (Question) -> Unit
 ) {
-    var expandedState by remember { mutableStateOf(true) }
+
     val rotationState by animateFloatAsState(
-        targetValue = if (expandedState) 0f else 180f
+        targetValue = if (item.expanded) 0f else 180f
     )
 
     Card(
@@ -49,7 +51,7 @@ fun ExpandableCard(
                 )
             ),
         onClick = {
-            expandedState = !expandedState
+            onExpanded.invoke(item)
         }
     ) {
         Column(
@@ -63,7 +65,7 @@ fun ExpandableCard(
                 Text(
                     modifier = Modifier
                         .weight(6f),
-                    text = item.question,
+                    text = item.questionText,
                     fontSize = titleFontSize,
                     fontWeight = titleFontWeight,
                     maxLines = 1,
@@ -75,7 +77,7 @@ fun ExpandableCard(
                         .alpha(ContentAlpha.medium)
                         .rotate(rotationState),
                     onClick = {
-                        expandedState = !expandedState
+                        onExpanded.invoke(item)
                     }) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
@@ -83,9 +85,9 @@ fun ExpandableCard(
                     )
                 }
             }
-            if (expandedState) {
+            if (item.expanded) {
                 Text(
-                    text = item.answer,
+                    text = item.answerText,
                     fontSize = descriptionFontSize,
                     fontWeight = descriptionFontWeight,
                     maxLines = descriptionMaxLines,
@@ -102,13 +104,7 @@ fun ExpandableCard(
 @Preview
 fun ExpandableCardPreview() {
     ExpandableCard(
-        item = Help(
-            question = "My Question",
-            answer = "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit,\"sed do eiusmod tempor incididunt ut labore et dolore magna" +
-                    "                \"aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
-                    "                \"ullamco laboris nisi ut aliquip ex ea commodo consequat.\" ",
-            isExpandable = true
-        ),
-
-        )
+        item = QuestionDb.getQuestions().first(),
+        onExpanded = {}
+    )
 }
