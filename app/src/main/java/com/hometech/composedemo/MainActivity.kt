@@ -71,6 +71,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @OptIn(ExperimentalMotionApi::class)
 @Composable
 fun CollapsingToolbar(lazyScrollState: LazyListState) {
