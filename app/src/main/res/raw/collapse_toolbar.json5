@@ -1,0 +1,96 @@
+{
+  ConstraintSets: {
+    start: {
+      box: {
+        width: 'spread',
+        height: 230,
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent', 'top']
+      },
+      help_image:{
+        width: 80,
+        height: 120,
+        end: ['box', 'end', 16],
+        top: ['box', 'top', 16],
+        bottom: ['box', 'bottom',8]
+      },
+      close_button:{
+        start: ['parent', 'start',8],
+        bottom: ['box', 'bottom',8]
+      },
+      title: {
+        width: 36,
+        height: 36,
+        start: ['close_button', 'end', 16],
+        bottom: ['close_button', 'bottom'],
+        top: ['close_button', 'top']
+      }
+
+    },
+    end: {
+      help_image:{
+        width: 10,
+        height: 10,
+        bottom: ['box', 'bottom'],
+        end: ['box', 'end']
+      },
+      box: {
+        width: 'spread',
+        height: 56,
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent', 'top'],
+      },
+      close_button:{
+        start: ['box', 'start', 16],
+        bottom: ['box', 'bottom', 16],
+        top: ['box', 'top', 16]
+      },
+      title: {
+        width: 36,
+        height: 36,
+        start: ['box', 'start'],
+        bottom: ['box', 'bottom'],
+        top: ['box', 'top']
+      }
+
+    }
+  },
+  Transitions: {
+    default: {
+      from: 'start',
+      to: 'end',
+      pathMotionArc: 'startVertical',
+      // key here must be Key with capital K
+      KeyFrames: {
+        KeyAttributes: [
+          {
+            target: ['box'],
+            frames: [0, 20, 50, 80, 100]
+//            rotationZ: [0,  360]
+          },
+          {
+            target: ['close_button'],
+            frames: [0, 20, 60, 80, 100],
+            translationY: [20, 40, 65, 85, 100]
+//            alpha: [1, 0.5, 0.5, 0.7, 1]
+          },
+          {
+            target: ['title'],
+            frames: [0, 100],
+            translationY: [20,100]
+//            alpha: [1, 0.5, 0.5, 0.7, 1]
+          },
+          {
+            target: ['help_image'],
+            frames: [0, 30, 50, 80, 100],
+            scaleX: [1, 0.8, 0.6, 0.3, 0],
+            scaleY: [1, 0.8, 0.6, 0.3, 0],
+            alpha: [1, 0.8, 0.6, 0.3, 0]
+          }
+        ]
+      }
+    }
+  }
+}
