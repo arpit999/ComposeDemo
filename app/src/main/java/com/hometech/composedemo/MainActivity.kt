@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarDefaults.backgroundColor
+import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -58,10 +59,11 @@ class MainActivity : ComponentActivity() {
                             .animateContentSize(),
                         state = lazyScrollState
                     ) {
-                        // Add 5 items
                         items(100) { index ->
                             Text(modifier = Modifier.padding(36.dp), text = "Item: $index")
+                            Divider(color = Color.Black, thickness = 1.dp)
                         }
+
                     }
                 }
             }
@@ -121,7 +123,7 @@ fun CollapsingToolbar(lazyScrollState: LazyListState) {
             modifier = Modifier.layoutId("title"),
             text = "Help",
             color = Color.White,
-            fontSize = 16.sp
+            fontSize = 18.sp
         )
 
     }
