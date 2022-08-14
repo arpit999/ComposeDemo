@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 import com.hometech.composedemo.ui.ExpandableCard
-import com.hometech.composedemo.ui.Help
 import com.hometech.composedemo.ui.QuestionDb
 import com.hometech.composedemo.ui.theme.ComposeDemoTheme
 
@@ -33,7 +32,8 @@ class MainActivity : ComponentActivity() {
                             item = item,
                             onExpanded = { clickedItem ->
                                 val updatedItem = clickedItem.copy(expanded = clickedItem.expanded.not())
-                                questions = questions.updateItem(updatedItem) { it.questionText == clickedItem.questionText }
+                                questions =
+                                    questions.updateItem(updatedItem) { it.questionText == clickedItem.questionText }
                             }
                         )
                     }
