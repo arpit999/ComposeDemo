@@ -36,7 +36,6 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionScene
 
-@OptIn(ExperimentalMotionApi::class)
 @ExperimentalComposeUiApi
 class MainActivity : ComponentActivity() {
 
@@ -98,12 +97,12 @@ fun CollapsingToolbar(lazyScrollState: LazyListState) {
             .height(motionHeight)
     ) {
 
-//        val boxProperties = motionProperties(id = "box")
-
+        val boxProperties = motionProperties(id = "box")
+//        val startColor = Color(boxProperties.value.color("custome"))
         Box(
             modifier = Modifier
                 .layoutId("box")
-                .background(Color(0xFF4CC48E))
+                .background(boxProperties.value.color("background"))
         )
 
         Image(

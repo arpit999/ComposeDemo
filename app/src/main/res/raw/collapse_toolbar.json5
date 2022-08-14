@@ -6,7 +6,10 @@
         height: 230,
         start: ['parent', 'start'],
         end: ['parent', 'end'],
-        top: ['parent', 'top']
+        top: ['parent', 'top'],
+        custom: {
+          background: '#FF74d680'
+        }
       },
       help_image:{
         width: 80,
@@ -39,6 +42,9 @@
         start: ['parent', 'start'],
         end: ['parent', 'end'],
         top: ['parent', 'top'],
+        custom: {
+          background: '#FF378b29'
+        }
       },
       close_button:{
         start: ['box', 'start', 16],
