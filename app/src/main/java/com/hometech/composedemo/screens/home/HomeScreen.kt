@@ -57,7 +57,7 @@ fun MainContent(
         items(items = bookList) {
             BookRow(book = it) { book: String ->
                 Log.d("TAG", book)
-                navController.navigate(route = BookAppFlow.DetailsScreen.name)
+                navController.navigate(route = BookAppFlow.DetailsScreen.name + "/$book")
             }
         }
     }
