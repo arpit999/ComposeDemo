@@ -25,8 +25,9 @@ import com.hometech.composedemo.navigation.BookAppFlow
 fun HomeScreen(navController: NavController) {
     Scaffold(
         topBar = {
-            TopAppBar(backgroundColor = Color.Magenta, elevation = 5.dp) {
+            TopAppBar(backgroundColor = Color.DarkGray, elevation = 5.dp) {
                 Text(
+                    modifier = Modifier.padding(8.dp),
                     text = "Books",
                     style = MaterialTheme.typography.h6,
                     color = Color.White
