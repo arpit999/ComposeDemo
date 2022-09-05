@@ -1,4 +1,4 @@
-package com.hometech.composedemo.navigation
+package com.hometech.composedemo.ui.navigation
 
 enum class BookAppFlow {
     HomeScreen,

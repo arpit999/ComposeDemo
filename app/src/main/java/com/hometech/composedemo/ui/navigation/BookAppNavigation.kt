@@ -1,4 +1,4 @@
-package com.hometech.composedemo.navigation
+package com.hometech.composedemo.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.hometech.composedemo.screens.details.DetailsScreen
-import com.hometech.composedemo.screens.home.HomeScreen
+import com.hometech.composedemo.ui.screens.details.DetailsScreen
+import com.hometech.composedemo.ui.screens.home.HomeScreen
 
 @Composable
 fun BookAppNavigation() {
