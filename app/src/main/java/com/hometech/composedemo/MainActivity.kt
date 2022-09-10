@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TextField(
+                    OutlinedTextField(
                         modifier = Modifier,
                         value = text,
                         onValueChange = {
@@ -40,6 +40,12 @@ class MainActivity : ComponentActivity() {
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
+                        label = {
+                            Column() {
+                                Text(text = "Amount")
+//                                Text(text = "Value")
+                            }
+                        },
                         singleLine = true
                     )
                 }

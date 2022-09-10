@@ -11,6 +11,8 @@ import java.util.*
 class CommaStringVisualTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
 
+        Log.d("filter", "text: ${text.text}")
+
         val inputString =
             if (text.text.isDigitsOnly() && text.text.isNotEmpty() && isLanguageEnglish()) {
                 "$ " + String.format("%,d", text.text.toLong())
