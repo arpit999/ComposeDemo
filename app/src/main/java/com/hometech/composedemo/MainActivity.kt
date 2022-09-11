@@ -34,16 +34,21 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier,
                         value = text,
                         onValueChange = {
-                            text = it
+                            text = if (it.startsWith(".") || it.startsWith(",") && isLanguageEnglish()) {
+                                "0" + it.replace(",", ".")
+                            } else if (it.startsWith("0") && !isLanguageEnglish()) {
+                                "0" + it.replace(".", ",")
+                            } else {
+                                getDecimalFormat(it)
+                            }.trim().replace("-","").replace(" ","")
                         },
                         visualTransformation = CommaStringVisualTransformation(),
                         keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
+                            keyboardType = KeyboardType.Decimal
                         ),
                         label = {
                             Column() {
                                 Text(text = "Amount")
-//                                Text(text = "Value")
                             }
                         },
                         singleLine = true
@@ -52,6 +57,23 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    private fun getDecimalFormat(amount: String): String {
+        return if (isLanguageEnglish()) {
+            if (amount.contains(",")) {
+                amount.replace(",", ".")
+            }
+            amount.replace(",", ".")
+        } else {
+            amount.replace(".", ",")
+        }
+    }
+
+    private fun isLanguageEnglish(): Boolean {
+        val currentLanguage = Locale.getDefault().language
+        return currentLanguage.equals("en")
+    }
+
 
     private fun getCurrency(text: String): String {
         val systemLanguage = Locale.getDefault().language

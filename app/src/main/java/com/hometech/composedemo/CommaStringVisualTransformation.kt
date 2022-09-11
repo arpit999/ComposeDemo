@@ -13,7 +13,7 @@ class CommaStringVisualTransformation : VisualTransformation {
 
         Log.d("filter", "text: ${text.text}")
 
-        val inputString =
+        val dollarString =
             if (text.text.isDigitsOnly() && text.text.isNotEmpty() && isLanguageEnglish()) {
                 "$ " + String.format("%,d", text.text.toLong())
             } else if (text.text.isDigitsOnly() && text.text.isNotEmpty() && !isLanguageEnglish()) {
@@ -22,14 +22,14 @@ class CommaStringVisualTransformation : VisualTransformation {
                 text
             }
 
-        Log.d("filter", "inputString: $inputString")
+        Log.d("filter", "inputString: $dollarString")
 
         val offsetMapping = object : OffsetMapping {
             val initSize = 0
             override fun originalToTransformed(offset: Int): Int {
 
-                val commasOrSpace = inputString.count { (it == ',') || (it == ' ') }
-                val dollar = inputString.count { it == '$' }
+                val commasOrSpace = dollarString.count { (it == ',') || (it == ' ') }
+                val dollar = dollarString.count { it == '$' }
 //                val space = commaString.count { it == ' ' }
 
                 var total =
@@ -50,9 +50,9 @@ class CommaStringVisualTransformation : VisualTransformation {
 
             override fun transformedToOriginal(offset: Int): Int {
                 Log.d("Offset", "transformedToOriginal: $offset")
-                val commas = inputString.count { it == ',' }
-                val dollar = inputString.count { it == '$' }
-                val space = inputString.count { it == ' ' }
+                val commas = dollarString.count { it == ',' }
+                val dollar = dollarString.count { it == '$' }
+                val space = dollarString.count { it == ' ' }
 
                 val total = offset + commas + dollar + space
 
@@ -66,7 +66,7 @@ class CommaStringVisualTransformation : VisualTransformation {
         }
 
         return TransformedText(
-            text = AnnotatedString("$inputString"),
+            text = AnnotatedString("$dollarString"),
             offsetMapping = offsetMapping
         )
     }
