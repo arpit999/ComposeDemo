@@ -13,16 +13,27 @@ class CommaStringVisualTransformation : VisualTransformation {
 
         Log.d("filter", "text: ${text.text}")
 
-        val dollarString =
+        var dollarString: String = ""
+        var centString: String = ""
+
+        if (text.text.contains(".")) {
+            dollarString = text.text.split(".")[0]
+            centString = text.text.split(".")[1]
+        } else if (text.text.contains(",")) {
+            dollarString = text.text.split(",")[0]
+            centString = text.text.split(",")[1]
+        }
+
+        dollarString =
             if (text.text.isDigitsOnly() && text.text.isNotEmpty() && isLanguageEnglish()) {
                 "$ " + String.format("%,d", text.text.toLong())
             } else if (text.text.isDigitsOnly() && text.text.isNotEmpty() && !isLanguageEnglish()) {
                 String.format("%,d", text.text.toLong()) + " $"
             } else {
-                text
+                text.text
             }
 
-        Log.d("filter", "inputString: $dollarString")
+        Log.d("filter", "dollarString: $dollarString, centString: $centString")
 
         val offsetMapping = object : OffsetMapping {
             val initSize = 0
@@ -30,10 +41,9 @@ class CommaStringVisualTransformation : VisualTransformation {
 
                 val commasOrSpace = dollarString.count { (it == ',') || (it == ' ') }
                 val dollar = dollarString.count { it == '$' }
-//                val space = commaString.count { it == ' ' }
 
                 var total =
-                    if (isLanguageEnglish()) offset + commasOrSpace + dollar else offset + commasOrSpace  - 1
+                    if (isLanguageEnglish()) offset + commasOrSpace + dollar else offset + commasOrSpace - 1
 
                 if (!isLanguageEnglish()) {
                     if (offset in 4..6) total += 1
@@ -45,7 +55,7 @@ class CommaStringVisualTransformation : VisualTransformation {
                     "originalToTransformed",
                     "Offset: $offset, Commas/Spaces: $commasOrSpace, Dollar: $dollar, Total: $total"
                 )
-                return if (offset == 0) initSize else total
+                return if (offset == 0) initSize else offset
             }
 
             override fun transformedToOriginal(offset: Int): Int {
@@ -74,6 +84,16 @@ class CommaStringVisualTransformation : VisualTransformation {
     fun isLanguageEnglish(): Boolean {
         val currentLanguage = Locale.getDefault().language
         return currentLanguage.equals("en")
+    }
+
+    fun getAmountPair(text: String): Pair<String, String> {
+        return if (text.contains(".")) {
+            Pair(text.split(".")[0], text.split(".")[1])
+        } else if (text.contains(",")) {
+            Pair(text.split(",")[0], text.split(",")[1])
+        } else {
+            Pair("", "")
+        }
     }
 
 }

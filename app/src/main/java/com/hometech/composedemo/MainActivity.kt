@@ -38,9 +38,11 @@ class MainActivity : ComponentActivity() {
                                 "0" + it.replace(",", ".")
                             } else if (it.startsWith("0") && !isLanguageEnglish()) {
                                 "0" + it.replace(".", ",")
+                            } else if (it.contains(".")) {
+                               getValidatedNumber(it)
                             } else {
-                                getDecimalFormat(it)
-                            }.trim().replace("-","").replace(" ","")
+                               it
+                            }.trim().replace("-", "").replace(" ", "")
                         },
                         visualTransformation = CommaStringVisualTransformation(),
                         keyboardOptions = KeyboardOptions(
@@ -105,6 +107,23 @@ class MainActivity : ComponentActivity() {
                     )
                 val amount = BigDecimal(it).toString()
             })
+        }
+    }
+
+    private fun getValidatedNumber(text: String): String {
+        // Start by filtering out unwanted characters like commas and multiple decimals
+        val filteredChars = text.filterIndexed { index, c ->
+            c in "0123456789" ||                      // Take all digits
+                    (c == '.' && text.indexOf('.') == index)  // Take only the first decimal
+        }
+        // Now we need to remove extra digits from the input
+        return if(filteredChars.contains('.')) {
+            val beforeDecimal = filteredChars.substringBefore('.')
+            val afterDecimal = filteredChars.substringAfter('.')
+//            beforeDecimal.take(3) + "." + afterDecimal.take(2)    // If decimal is present, take first 3 digits before decimal and first 2 digits after decimal
+            beforeDecimal + "." + afterDecimal.take(2)    // If decimal is present, take first 3 digits before decimal and first 2 digits after decimal
+        } else {
+            filteredChars
         }
     }
 
