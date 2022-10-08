@@ -1,22 +1,25 @@
 package com.hometech.composedemo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import com.hometech.composedemo.ui.theme.ComposeDemoTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,12 +32,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalPagerApi::class)
     @Composable
     fun MyApp() {
 
-        val moneyCounter = remember {
-            mutableStateOf(0)
-        }
+        val imageList = listOf(R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e)
+
+        val pagerState = rememberPagerState()
+        val currentImage = remember(pagerState) { mutableStateOf(R.drawable.a) }
 
         Surface(
             modifier = Modifier
@@ -44,57 +49,32 @@ class MainActivity : ComponentActivity() {
         ) {
 
             Column(
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text(
-                    text = "$${moneyCounter.value}",
-                    style = TextStyle(
-                        color = Color.White,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 35.sp
-                    )
-                )
+                HorizontalPager(count = imageList.size, state = pagerState) { page ->
+                    when (page) {
+                        0 -> currentImage.value = imageList[0]
+                        1 -> currentImage.value = imageList[1]
+                        2 -> currentImage.value = imageList[2]
+                        3 -> currentImage.value = imageList[3]
+                        4 -> currentImage.value = imageList[4]
+                        else -> currentImage.value = R.drawable.a
+                    }
 
-                Spacer(modifier = Modifier.height(200.dp))
-                CreateCircle(moneyCounter = moneyCounter.value) { newValue ->
-                    moneyCounter.value = newValue
+                    Image(
+                        painterResource(currentImage.value),
+                        modifier = Modifier
+                            .weight(1f, fill = false)
+                            .fillMaxWidth(),
+                        contentDescription = ""
+                    )
+
                 }
 
-                if (moneyCounter.value > 20) {
-                    Text(
-                        text = "You have lots of money!",
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    )
-                }
             }
 
-        }
-    }
-
-
-    //    @Preview
-    @Composable
-    fun CreateCircle(moneyCounter: Int = 0, updateMoneyCounter: (Int) -> Unit) {
-        Card(
-            modifier = Modifier
-                .padding(3.dp)
-                .size(90.dp),
-            shape = CircleShape, elevation = 8.dp
-        ) {
-            Box(
-                contentAlignment = Alignment.Center, modifier = Modifier.clickable {
-                    updateMoneyCounter(moneyCounter + 1)
-                }
-            ) {
-
-                Text(text = "TAP")
-            }
         }
     }
 
