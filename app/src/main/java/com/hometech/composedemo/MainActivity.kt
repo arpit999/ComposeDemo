@@ -50,51 +50,43 @@ class MainActivity : ComponentActivity() {
             color = Color(0xFF546E7A)
         ) {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                Box() {
-                    HorizontalPager(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        count = imageList.size, state = pagerState
-                    ) { page ->
-                        when (page) {
-                            0 -> currentImage.value = imageList[0]
-                            1 -> currentImage.value = imageList[1]
-                            2 -> currentImage.value = imageList[2]
-                            3 -> currentImage.value = imageList[3]
-                            4 -> currentImage.value = imageList[4]
-                            5 -> currentImage.value = imageList[5]
-                            else -> currentImage.value = R.drawable.a
-                        }
-                        Image(
-                            painterResource(currentImage.value),
-                            contentScale = ContentScale.Fit,
-                            contentDescription = "",
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                HorizontalPager(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(.3f),
+                    count = imageList.size, state = pagerState
+                ) { page ->
+                    when (page) {
+                        0 -> currentImage.value = imageList[0]
+                        1 -> currentImage.value = imageList[1]
+                        2 -> currentImage.value = imageList[2]
+                        3 -> currentImage.value = imageList[3]
+                        4 -> currentImage.value = imageList[4]
+                        5 -> currentImage.value = imageList[5]
+                        else -> currentImage.value = R.drawable.a
                     }
+                    Image(
+                        painterResource(currentImage.value),
+                        contentScale = ContentScale.FillBounds,
+                        contentDescription = "",
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                Card(
+                    modifier = Modifier
+                        .offset(0.dp, (-100).dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                ) {
                     Column {
-                        Spacer(modifier = Modifier.padding(100.dp))
-
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 24.dp)
-                        ) {
-//                            LazyColumn {
-//                                items(19) {
-                            Column {
-                                for (i in 1..10)
-                                    Text(text = "Account $i", modifier = Modifier.padding(16.dp))
-                            }
-//                                }
-//                            }
-                        }
+                        for (i in 1..10)
+                            Text(text = "Account $i", modifier = Modifier.padding(16.dp))
                     }
                 }
 
                 Spacer(modifier = Modifier.padding(16.dp))
 
-                LazyRow(modifier = Modifier.padding(start = 8.dp,bottom = 16.dp)) {
+                LazyRow(modifier = Modifier.padding(start = 8.dp, bottom = 16.dp)) {
                     items(10) {
                         Card {
                             Column(modifier = Modifier.padding(16.dp)) {
