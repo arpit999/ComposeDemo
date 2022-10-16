@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -43,17 +44,25 @@ class MainActivity : ComponentActivity() {
 
         val pagerState = rememberPagerState()
         val currentImage = remember(pagerState) { mutableStateOf(R.drawable.a) }
-
+        val scroll = rememberScrollState()
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
             color = Color(0xFF546E7A)
         ) {
-            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+
+            ConstraintLayout(modifier = Modifier.verticalScroll(scroll)) {
+
+                // Create guideline from the top of the parent at 30% the height of the Composable
+                val startGuideline = createGuidelineFromTop(0.2f)
+                val (viewPager, accountList, spacer, insightCards) = createRefs()
+
                 HorizontalPager(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(.3f),
+                        .constrainAs(viewPager) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                        },
                     count = imageList.size, state = pagerState
                 ) { page ->
                     when (page) {
@@ -72,37 +81,49 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
+
                 Card(
                     modifier = Modifier
-                        .offset(0.dp, (-100).dp)
+                        .constrainAs(accountList) {
+                            start.linkTo(parent.start)
+                            top.linkTo(startGuideline)
+                        }
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp)
+                        .padding(horizontal = 28.dp), elevation = 12.dp
                 ) {
                     Column {
-                        for (i in 1..10)
+                        for (i in 1..15)
                             Text(text = "Account $i", modifier = Modifier.padding(16.dp))
                     }
                 }
 
-                Spacer(modifier = Modifier.padding(16.dp))
+                Spacer(modifier = Modifier
+                    .constrainAs(spacer) {
+                        start.linkTo(parent.start)
+                        top.linkTo(accountList.bottom)
+                    }
+                    .padding(16.dp))
 
-                LazyRow(modifier = Modifier.padding(start = 8.dp, bottom = 16.dp)) {
+                LazyRow(modifier = Modifier
+                    .constrainAs(insightCards) {
+                        start.linkTo(parent.start)
+                        top.linkTo(spacer.bottom)
+                    }
+                    .padding(start = 8.dp, bottom = 16.dp)
+                ) {
                     items(10) {
                         Card {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Text(
-                                    text = "Jetpack"
-                                )
+                                Text(text = "Jetpack")
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "Compose"
-                                )
+                                Text(text = "Compose")
                             }
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
             }
+
         }
     }
 
