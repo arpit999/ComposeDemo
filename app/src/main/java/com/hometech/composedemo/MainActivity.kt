@@ -11,9 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -24,6 +22,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.hometech.composedemo.ui.Theme
 import com.hometech.composedemo.ui.theme.ComposeDemoTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,10 +39,19 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MyApp() {
 
-        val imageList = listOf(R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.f)
+//        val imageList = listOf(R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.f)
+
+        val themeList = listOf(
+            Theme(R.drawable.a, Color(255, 152, 0), Color(38, 50, 56)),
+            Theme(R.drawable.b, Color(139, 195, 74), Color(38, 50, 56)),
+            Theme(R.drawable.c, Color(103, 58, 183), Color(240, 240, 240)),
+            Theme(R.drawable.d, Color(63, 81, 181), Color(240, 240, 240)),
+            Theme(R.drawable.e, Color(96, 125, 139), Color(240, 240, 240)),
+            Theme(R.drawable.f, Color(255, 152, 0), Color(63, 81, 181))
+        )
 
         val pagerState = rememberPagerState()
-        val currentImage = remember(pagerState) { mutableStateOf(R.drawable.a) }
+        var currentTheme by remember { mutableStateOf(themeList[0]) }
         val scroll = rememberScrollState()
         Surface(
             modifier = Modifier
@@ -53,8 +61,8 @@ class MainActivity : ComponentActivity() {
 
             ConstraintLayout(modifier = Modifier.verticalScroll(scroll)) {
 
-                // Create guideline from the top of the parent at 30% the height of the Composable
-                val startGuideline = createGuidelineFromTop(0.2f)
+                // Create guideline from the top of the parent at 20% the height of the Composable
+                val startGuideline = createGuidelineFromTop(0.32f)
                 val (viewPager, accountList, spacer, insightCards) = createRefs()
 
                 HorizontalPager(
@@ -63,19 +71,14 @@ class MainActivity : ComponentActivity() {
                             start.linkTo(parent.start)
                             top.linkTo(parent.top)
                         },
-                    count = imageList.size, state = pagerState
-                ) { page ->
-                    when (page) {
-                        0 -> currentImage.value = imageList[0]
-                        1 -> currentImage.value = imageList[1]
-                        2 -> currentImage.value = imageList[2]
-                        3 -> currentImage.value = imageList[3]
-                        4 -> currentImage.value = imageList[4]
-                        5 -> currentImage.value = imageList[5]
-                        else -> currentImage.value = R.drawable.a
-                    }
+                    count = themeList.size,
+                    state = pagerState
+                ) {
+                    // currentPage Documentation says that this will be not accurate information that we are seeing on the screen.
+                    currentTheme = themeList[pagerState.currentPage]
+
                     Image(
-                        painterResource(currentImage.value),
+                        painterResource(currentTheme.themeCard),
                         contentScale = ContentScale.FillBounds,
                         contentDescription = "",
                         modifier = Modifier.fillMaxWidth()
@@ -92,7 +95,7 @@ class MainActivity : ComponentActivity() {
                         .padding(horizontal = 28.dp), elevation = 12.dp
                 ) {
                     Column {
-                        for (i in 1..15)
+                        for (i in 1..6)
                             Text(text = "Account $i", modifier = Modifier.padding(16.dp))
                     }
                 }
@@ -112,11 +115,11 @@ class MainActivity : ComponentActivity() {
                     .padding(start = 8.dp, bottom = 16.dp)
                 ) {
                     items(10) {
-                        Card {
+                        Card(backgroundColor = currentTheme.backgroundColor) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Text(text = "Jetpack")
+                                Text(text = "Jetpack", color = currentTheme.fontColor)
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Text(text = "Compose")
+                                Text(text = "Compose", color = currentTheme.fontColor)
                             }
                         }
                         Spacer(modifier = Modifier.width(8.dp))
