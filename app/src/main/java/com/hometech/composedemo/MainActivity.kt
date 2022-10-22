@@ -42,12 +42,12 @@ class MainActivity : ComponentActivity() {
 //        val imageList = listOf(R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.f)
 
         val themeList = listOf(
-            Theme(R.drawable.a, Color(255, 152, 0), Color(38, 50, 56)),
-            Theme(R.drawable.b, Color(139, 195, 74), Color(38, 50, 56)),
-            Theme(R.drawable.c, Color(103, 58, 183), Color(240, 240, 240)),
-            Theme(R.drawable.d, Color(63, 81, 181), Color(240, 240, 240)),
-            Theme(R.drawable.e, Color(96, 125, 139), Color(240, 240, 240)),
-            Theme(R.drawable.f, Color(255, 152, 0), Color(63, 81, 181))
+            Theme(R.drawable.a, Color(105, 44, 43), Color(225, 144, 143)),
+            Theme(R.drawable.b, Color(4, 68, 108), Color(240, 240, 240)),
+            Theme(R.drawable.c, Color(57, 129, 188), Color(212, 219, 230, 255)),
+            Theme(R.drawable.d, Color(9, 50, 107), Color(249, 107, 42, 255)),
+            Theme(R.drawable.e, Color(53, 56, 56), Color(199, 179, 152)),
+            Theme(R.drawable.f, Color(93, 67, 151), Color(188, 118, 191))
         )
 
         val pagerState = rememberPagerState()
@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
             ConstraintLayout(modifier = Modifier.verticalScroll(scroll)) {
 
                 // Create guideline from the top of the parent at 20% the height of the Composable
-                val startGuideline = createGuidelineFromTop(0.32f)
+                val startGuideline = createGuidelineFromTop(0.37f)
                 val (viewPager, accountList, spacer, insightCards) = createRefs()
 
                 HorizontalPager(
@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
                         .padding(horizontal = 28.dp), elevation = 12.dp
                 ) {
                     Column {
-                        for (i in 1..6)
+                        for (i in 1..5)
                             Text(text = "Account $i", modifier = Modifier.padding(16.dp))
                     }
                 }
