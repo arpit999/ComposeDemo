@@ -9,19 +9,24 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.hometech.composedemo.ui.Account
 import com.hometech.composedemo.ui.Theme
 import com.hometech.composedemo.ui.theme.ComposeDemoTheme
 
@@ -39,7 +44,12 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MyApp() {
 
-//        val imageList = listOf(R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.f)
+        val accountList = listOf(
+            Account(name = "PETER STEEDMAN", amount = "$1,340.02"),
+            Account(name = "STAN KOZA", amount = "$14,754.77"),
+            Account(name = "Long Term GIC", amount = "$102,742.49"),
+            Account(name = "RSP Advantage Account", amount = "$150,908.35"),
+        )
 
         val themeList = listOf(
             Theme(R.drawable.a, Color(105, 44, 43), Color(225, 144, 143)),
@@ -53,6 +63,7 @@ class MainActivity : ComponentActivity() {
         val pagerState = rememberPagerState()
         var currentTheme by remember { mutableStateOf(themeList[0]) }
         val scroll = rememberScrollState()
+
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
@@ -61,9 +72,9 @@ class MainActivity : ComponentActivity() {
 
             ConstraintLayout(modifier = Modifier.verticalScroll(scroll)) {
 
-                // Create guideline from the top of the parent at 20% the height of the Composable
-                val startGuideline = createGuidelineFromTop(0.37f)
-                val (viewPager, accountList, spacer, insightCards) = createRefs()
+                // Create guideline from the top of the parent at 250dp the height of the Composable or I can also pass float values as a percentage of the height
+                val startGuideline = createGuidelineFromTop(250.dp)
+                val (viewPager, list, spacer, insightCards) = createRefs()
 
                 HorizontalPager(
                     modifier = Modifier
@@ -87,7 +98,7 @@ class MainActivity : ComponentActivity() {
 
                 Card(
                     modifier = Modifier
-                        .constrainAs(accountList) {
+                        .constrainAs(list) {
                             start.linkTo(parent.start)
                             top.linkTo(startGuideline)
                         }
@@ -95,15 +106,54 @@ class MainActivity : ComponentActivity() {
                         .padding(horizontal = 28.dp), elevation = 12.dp
                 ) {
                     Column {
-                        for (i in 1..5)
-                            Text(text = "Account $i", modifier = Modifier.padding(16.dp))
+                        Text(
+                            text = "DEPOSITS",
+                            modifier = Modifier.padding(start = 8.dp, top = 12.dp, bottom = 8.dp),
+                            fontSize = 14.sp,
+                            color = Color.Gray
+                        )
+                        Column(
+                            Modifier
+                                .padding(horizontal = 20.dp)
+                                .padding(bottom = 8.dp)
+                        ) {
+
+                            for ((index, value) in accountList.withIndex()) {
+                                Row(
+                                    Modifier.padding(top = 8.dp, bottom = 4.dp),
+                                    verticalAlignment = CenterVertically
+                                ) {
+                                    Text(
+                                        text = value.name,
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .wrapContentWidth(Alignment.Start),
+                                        fontSize = 12.sp
+                                    )
+                                    Text(
+                                        text = value.amount,
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .wrapContentWidth(Alignment.End),
+                                        fontSize = 12.sp
+                                    )
+                                }
+                                if (index <= accountList.size - 2) {
+                                    Divider(
+                                        thickness = 0.3.dp,
+                                        color = Color.Black,
+                                        modifier = Modifier.padding(vertical = 4.dp)
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
 
                 Spacer(modifier = Modifier
                     .constrainAs(spacer) {
                         start.linkTo(parent.start)
-                        top.linkTo(accountList.bottom)
+                        top.linkTo(list.bottom)
                     }
                     .padding(16.dp))
 
