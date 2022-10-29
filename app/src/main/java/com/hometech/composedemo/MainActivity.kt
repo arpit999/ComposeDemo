@@ -1,9 +1,11 @@
 package com.hometech.composedemo
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +52,9 @@ class MainActivity : ComponentActivity() {
             Account(name = "STAN KOZA", amount = "$14,754.77"),
             Account(name = "Long Term GIC", amount = "$102,742.49"),
             Account(name = "RSP Advantage Account", amount = "$150,908.35"),
+            Account(name = "STAN KOZA", amount = "$14,754.77"),
+            Account(name = "Long Term GIC", amount = "$102,742.49"),
+            Account(name = "RSP Advantage Account", amount = "$150,908.35"),
         )
 
         val themeList = listOf(
@@ -63,6 +69,7 @@ class MainActivity : ComponentActivity() {
         val pagerState = rememberPagerState()
         var currentTheme by remember { mutableStateOf(themeList[0]) }
         val scroll = rememberScrollState()
+        val context = LocalContext.current
 
         Surface(
             modifier = Modifier
@@ -118,33 +125,8 @@ class MainActivity : ComponentActivity() {
                                 .padding(bottom = 8.dp)
                         ) {
 
-                            for ((index, value) in accountList.withIndex()) {
-                                Row(
-                                    Modifier.padding(top = 8.dp, bottom = 4.dp),
-                                    verticalAlignment = CenterVertically
-                                ) {
-                                    Text(
-                                        text = value.name,
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .wrapContentWidth(Alignment.Start),
-                                        fontSize = 12.sp
-                                    )
-                                    Text(
-                                        text = value.amount,
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .wrapContentWidth(Alignment.End),
-                                        fontSize = 12.sp
-                                    )
-                                }
-                                if (index <= accountList.size - 2) {
-                                    Divider(
-                                        thickness = 0.3.dp,
-                                        color = Color.Black,
-                                        modifier = Modifier.padding(vertical = 4.dp)
-                                    )
-                                }
+                            GenerateAccountList(accountList) {
+                                Toast.makeText(context, " ${it.name} has ${it.amount}", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -177,6 +159,40 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
+        }
+    }
+
+    @Composable
+    private fun GenerateAccountList(accountList: List<Account>, onClick: (Account) -> Unit) {
+        for ((index, value) in accountList.withIndex()) {
+            Row(
+                Modifier
+                    .padding(top = 8.dp, bottom = 4.dp)
+                    .clickable { onClick.invoke(value) },
+                verticalAlignment = CenterVertically,
+            ) {
+                Text(
+                    text = value.name,
+                    modifier = Modifier
+                        .weight(1f)
+                        .wrapContentWidth(Alignment.Start),
+                    fontSize = 12.sp
+                )
+                Text(
+                    text = value.amount,
+                    modifier = Modifier
+                        .weight(1f)
+                        .wrapContentWidth(Alignment.End),
+                    fontSize = 12.sp
+                )
+            }
+            if (index <= accountList.size - 2) {
+                Divider(
+                    thickness = 0.3.dp,
+                    color = Color.Black,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+            }
         }
     }
 
