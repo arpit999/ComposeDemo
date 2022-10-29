@@ -110,7 +110,8 @@ class MainActivity : ComponentActivity() {
                             top.linkTo(startGuideline)
                         }
                         .fillMaxWidth()
-                        .padding(horizontal = 28.dp), elevation = 12.dp
+                        .padding(horizontal = 28.dp),
+                    elevation = 12.dp
                 ) {
                     Column {
                         Text(
@@ -166,15 +167,14 @@ class MainActivity : ComponentActivity() {
     private fun GenerateAccountList(accountList: List<Account>, onClick: (Account) -> Unit) {
         for ((index, value) in accountList.withIndex()) {
             Row(
-                Modifier
-                    .padding(top = 8.dp, bottom = 4.dp)
-                    .clickable { onClick.invoke(value) },
+                Modifier.clickable { onClick.invoke(value) },
                 verticalAlignment = CenterVertically,
             ) {
                 Text(
                     text = value.name,
                     modifier = Modifier
                         .weight(1f)
+                        .padding(top = 8.dp, bottom = 4.dp)
                         .wrapContentWidth(Alignment.Start),
                     fontSize = 12.sp
                 )
@@ -182,6 +182,7 @@ class MainActivity : ComponentActivity() {
                     text = value.amount,
                     modifier = Modifier
                         .weight(1f)
+                        .padding(top = 8.dp, bottom = 4.dp)
                         .wrapContentWidth(Alignment.End),
                     fontSize = 12.sp
                 )
