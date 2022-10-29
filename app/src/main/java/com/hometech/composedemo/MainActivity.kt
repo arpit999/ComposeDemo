@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -116,19 +117,13 @@ class MainActivity : ComponentActivity() {
                     Column {
                         Text(
                             text = "DEPOSITS",
-                            modifier = Modifier.padding(start = 8.dp, top = 12.dp, bottom = 8.dp),
-                            fontSize = 14.sp,
-                            color = Color.Gray
+                            modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 4.dp),
+                            fontSize = 12.sp,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Light
                         )
-                        Column(
-                            Modifier
-                                .padding(horizontal = 20.dp)
-                                .padding(bottom = 8.dp)
-                        ) {
-
-                            GenerateAccountList(accountList) {
-                                Toast.makeText(context, " ${it.name} has ${it.amount}", Toast.LENGTH_SHORT).show()
-                            }
+                        GenerateAccountList(accountList) {
+                            Toast.makeText(context, " ${it.name} has ${it.amount}", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -170,19 +165,20 @@ class MainActivity : ComponentActivity() {
                 Modifier.clickable { onClick.invoke(value) },
                 verticalAlignment = CenterVertically,
             ) {
+                val modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 8.dp, bottom = 8.dp)
+
                 Text(
                     text = value.name,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(top = 8.dp, bottom = 4.dp)
+                    modifier = modifier
                         .wrapContentWidth(Alignment.Start),
                     fontSize = 12.sp
                 )
                 Text(
                     text = value.amount,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(top = 8.dp, bottom = 4.dp)
+                    modifier = modifier
                         .wrapContentWidth(Alignment.End),
                     fontSize = 12.sp
                 )
@@ -191,7 +187,7 @@ class MainActivity : ComponentActivity() {
                 Divider(
                     thickness = 0.3.dp,
                     color = Color.Black,
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(horizontal = 20.dp)
                 )
             }
         }
