@@ -11,10 +11,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -95,13 +92,15 @@ class MainActivity : ComponentActivity() {
                     count = themeList.size,
                     state = pagerState
                 ) {
-                    // currentPage Documentation says that this will be not accurate information that we are seeing on the screen.
-                    currentTheme = themeList[pagerState.currentPage]
+                    // Require this due to compositions
+                    LaunchedEffect(key1 = pagerState) {
+                        currentTheme = themeList[pagerState.currentPage]
+                    }
 
                     Image(
-                        painterResource(currentTheme.themeCard),
+                        painterResource(themeList[it].themeCard),
                         contentScale = ContentScale.FillBounds,
-                        contentDescription = "",
+                        contentDescription = null,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
