@@ -16,6 +16,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -36,19 +37,18 @@ class MainActivity : ComponentActivity() {
 
                 val viewModel = viewModel<SearchViewModel>()
                 val searchText by viewModel.searchText.collectAsState()
+                val isSearching by viewModel.isSearching.collectAsState()
                 val products by viewModel.products.collectAsState()
 
                 Surface(color = MaterialTheme.colors.background) {
-
-                    SearchView(searchText, products, viewModel::onSearchText)
-
+                    SearchView(searchText, products, isSearching, viewModel::onSearchText)
                 }
             }
         }
     }
 
     @Composable
-    fun SearchView(searchText: String, products: List<Product>, onSearchText: (String) -> Unit) {
+    fun SearchView(searchText: String, products: List<Product>, isSearching: Boolean, onSearchText: (String) -> Unit) {
 
         Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -61,18 +61,26 @@ class MainActivity : ComponentActivity() {
                         text = "Search"
                     )
                 })
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
-                items(products) { product ->
-                    ProductItem(product = product)
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
-                    )
+            if (isSearching) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    items(products) { product ->
+                        ProductItem(product = product)
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                        )
+                    }
                 }
             }
         }
@@ -135,7 +143,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DefaultPreview() {
         ComposeDemoTheme {
-            SearchView(searchText = "", products = allProducts, onSearchText = { })
+            SearchView(searchText = "", products = allProducts, isSearching = true) { }
         }
     }
 
