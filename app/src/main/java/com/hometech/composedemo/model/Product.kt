@@ -2,8 +2,14 @@ package com.hometech.composedemo.model
 
 data class Product(val id: Int, val name: String, val description: String, val type: String, val price: Int) {
 
+    /**
+     * @param query add type text in field
+     */
     fun doesMatchQuery(query: String): Boolean {
 
+        /**
+         * provide combinations of you search So depending on this combinations it will generate product list
+         */
         val matchingCombinations = listOf(
             "$name.first()${name.last()}",
             "$name.first()${name.last()}",
@@ -12,6 +18,7 @@ data class Product(val id: Int, val name: String, val description: String, val t
             "$price.first()"
         )
 
+        // match each combination and return appropriate result
         return matchingCombinations.any {
             it.contains(query, ignoreCase = true)
         }
