@@ -34,7 +34,7 @@ class SearchViewModel : ViewModel() {
                 allProducts
             } else {
                 // Mimic the api call to get product list
-                delay(3000)
+                delay(2000)
                 products.filter {
                     it.doesMatchQuery(searchText)
                 }
